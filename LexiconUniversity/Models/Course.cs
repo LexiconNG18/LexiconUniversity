@@ -17,6 +17,8 @@ namespace LexiconUniversity.Models
         
         public int Credits { get; set; }
 
+        public int StudentCount => Enrollments.Count;
+
         // Navigational property
 
         public virtual ICollection<Enrollment> Enrollments { get; set; }

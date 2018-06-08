@@ -9,39 +9,47 @@
 <div>
     <h4>Course</h4>
     <hr />
-    <dl class="dl-horizontal">
-        <dt>            @Html.DisplayNameFor(course => course.Name)        </dt>
-        <dd>            @Html.DisplayFor(model => model.Name)        </dd>
+    <div class="row">
+        <div class="col-sm-4">
+            <dl class="dl-horizontal">
+                <dt> @Html.DisplayNameFor(course => course.CourseId) </dt>
+                <dd> @Html.DisplayFor(model => model.CourseId) </dd>
 
-        <dt>            @Html.DisplayNameFor(model => model.Credits)        </dt>
-        <dd>            @Html.DisplayFor(model => model.Credits)        </dd>
+                <dt> @Html.DisplayNameFor(course => course.Name) </dt>
+                <dd> @Html.DisplayFor(model => model.Name) </dd>
 
-        <dt>            @Html.DisplayNameFor(model => model.Enrollments)        </dt>
-        <dd>
-            <table border="1">
-                <tr>
-                    <th>Student</th>
-                    <th>Grade</th>
-                    <th></th>
-                </tr>
-                @foreach (var enrollment in Model.Enrollments)
-                {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(course => enrollment.Student.FullName)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(course => enrollment.Grade)
-                    </td>
-                    <td>
-                        @Html.ActionLink(enrollment.Student.FullName, "Details", "Students", new { id = enrollment.StudentId }, null)
-                    </td>
-                </tr>                   
-                }
-            </table>
-        </dd>
-
-    </dl>
+                <dt> @Html.DisplayNameFor(model => model.Credits) </dt>
+                <dd> @Html.DisplayFor(model => model.Credits) </dd>
+            </dl>
+        </div>
+        <div class="col-sm-8">
+            <dl class="dl-horizontal">
+                <dt> @Html.DisplayNameFor(model => model.Enrollments)</dt>
+                <dd>
+                    <table class="table table-condensed">
+                        <thead>
+                            <tr>
+                                <th>Student</th>
+                                <th>Grade</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var enrollment in Model.Enrollments)
+                            {
+                                <tr>
+                                    <td>@Html.ActionLink(enrollment.Student.FullName, "Details", "Students", new { id = enrollment.StudentId }, null) </td>
+                                    <td>@Html.DisplayFor(course => enrollment.Grade) </td>
+                                    <td>@Html.ActionLink("delete", "Delete", "Enrollments", routeValues: new { enrollment.Id }, htmlAttributes: null)</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </dd>
+                <dd>@Html.ActionLink("Add student", "Create", "Enrollments", new { Model.CourseId }, null)</dd>
+            </dl>
+        </div>
+    </div>
 </div>
 <p>
     @Html.ActionLink("Edit", "Edit", new { id = Model.CourseId }) |

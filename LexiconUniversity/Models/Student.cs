@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace LexiconUniversity.Models
 {
@@ -12,6 +13,8 @@ namespace LexiconUniversity.Models
 
         [Required]
         public string LastName { get; set; }
+
+        public virtual ICollection<Enrollment> Enrollments { get; set; }
 
     }
 }

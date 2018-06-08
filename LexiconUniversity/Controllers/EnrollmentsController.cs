@@ -37,10 +37,24 @@ namespace LexiconUniversity.Controllers
         }
 
         // GET: Enrollments/Create
-        public ActionResult Create()
+        public ActionResult Create(string courseId, string studentId)
         {
-            ViewBag.CourseId = new SelectList(db.Courses, "CourseId", "Name");
-            ViewBag.StudentId = new SelectList(db.Students, "Id", "FirstName");
+            ViewBag.CourseId = new SelectList(db.Courses, "CourseId", "Name", courseId);
+
+            IQueryable<Student> students = db.Students;
+            if (courseId != null)
+            {
+                ViewBag.DisableCourseId = true;
+            }
+                            
+            var disabledStudents = students.Where(
+                    s => s.Enrollments
+                            .Select(e => e.CourseId)
+                            .Contains(courseId)
+            ).Select(s => s.Id);
+
+            ViewBag.StudentId = new SelectList(students, "Id", "FirstName", (object) studentId, disabledStudents);
+
             return View();
         }
 
@@ -55,7 +69,7 @@ namespace LexiconUniversity.Controllers
             {
                 db.Enrollments.Add(enrollment);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Details", "Courses", new { Id = enrollment.CourseId });
             }
 
             ViewBag.CourseId = new SelectList(db.Courses, "CourseId", "Name", enrollment.CourseId);
