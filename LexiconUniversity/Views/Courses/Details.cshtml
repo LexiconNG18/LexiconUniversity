@@ -40,7 +40,10 @@
                                 <tr>
                                     <td>@Html.ActionLink(enrollment.Student.FullName, "Details", "Students", new { id = enrollment.StudentId }, null) </td>
                                     <td>@Html.DisplayFor(course => enrollment.Grade) </td>
-                                    <td>@Html.ActionLink("delete", "Delete", "Enrollments", routeValues: new { enrollment.Id }, htmlAttributes: null)</td>
+                                    <td>
+                                        <button class="delete-enrollment" data-id="@enrollment.Id">delete</button>
+                                        @Html.ActionLink("delete", "Delete", "Enrollments", routeValues: new { enrollment.Id }, htmlAttributes: null)
+                                    </td>
                                 </tr>
                             }
                         </tbody>
@@ -55,3 +58,21 @@
     @Html.ActionLink("Edit", "Edit", new { id = Model.CourseId }) |
     @Html.ActionLink("Back to List", "Index")
 </p>
+@section scripts {
+    <script>
+        $('button.delete-enrollment').on('click', e => {
+            let id = e.target.dataset.id;
+            console.log("deleting " + id);
+            $.ajax({
+                url: "/Enrollments/Delete/" + id,
+                method: "POST"
+            }).done(() => {
+                console.log("deleted " + id);
+                location.reload();
+            }).fail((xhr, status, error) => {
+                console.log("failed:", error);
+            })
+        })
+    </script>
+}
+

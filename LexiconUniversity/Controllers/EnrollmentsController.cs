@@ -129,7 +129,7 @@ namespace LexiconUniversity.Controllers
 
         // POST: Enrollments/Delete/5
         [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
+        //[ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
             Enrollment enrollment = db.Enrollments.Find(id);
